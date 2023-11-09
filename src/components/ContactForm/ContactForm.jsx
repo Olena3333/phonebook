@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyledForm, StyledInput } from './ContactForm.styled';
 import { StyledButton } from 'components/App.styled';
 import { nanoid } from 'nanoid';
@@ -9,49 +9,69 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const handelOnChange = event => {
+    const { name, value } = event.target;
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
+  };
+
   const handelOnSubmit = event => {
     event.preventDefault();
-    const contact = {
-      name: event.currentTarget.elements.name.value,
-      number: event.currentTarget.elements.number.value,
+    const newContact = {
+      name: name.trim(),
+      number: number.trim(),
       id: nanoid(),
     };
+    if (!name.trim()) {
+      return;
+    }
 
-    const repeat = contacts.find(
-      ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
+    handleAddContact(newContact);
+    setName('');
+    setNumber('');
+  };
+  const handleAddContact = newContact => {
+    const isDublicate = contacts.find(
+      contact => contact.name === newContact.name
     );
 
-    if (repeat) {
-      return alert(`${contact.name} is already in contacts.`);
+    if (isDublicate) {
+      alert(`${newContact.name} is already in contacts.`);
+    } else {
+      dispatch(addContact(newContact));
     }
-    dispatch(addContact(contact));
-    event.currentTarget.reset();
   };
   return (
     <StyledForm onSubmit={handelOnSubmit}>
       <label>
         Name:
         <StyledInput
+          onChange={handelOnChange}
           type="text"
           placeholder="Enter the name "
           name="name"
+          value={name}
           required
         />
       </label>
       <label>
         Number:
         <StyledInput
+          onChange={handelOnChange}
           placeholder="Enter the number"
+          value={number}
           type="tel"
           name="number"
           required
         />
       </label>
-      <StyledButton
-      // disabled={!contact.name}
-      >
-        Add contact
-      </StyledButton>
+      <StyledButton disabled={!name}>Add contact</StyledButton>
     </StyledForm>
   );
 };
