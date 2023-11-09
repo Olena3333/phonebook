@@ -1,77 +1,84 @@
-import React, { useState } from 'react';
+import React from 'react';
+// import { nanoid } from 'nanoid';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { addContact, getContacts } from 'redux/sliceContacts';
+
 import { StyledForm, StyledInput } from './ContactForm.styled';
 import { StyledButton } from 'components/App.styled';
-import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact, getContacts } from 'redux/sliceContacts';
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  // const dispatch = useDispatch();
+  // const contacts = useSelector(getContacts);
 
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
 
-  const handelOnChange = event => {
-    const { name, value } = event.target;
-    if (name === 'name') {
-      setName(value);
-    } else if (name === 'number') {
-      setNumber(value);
-    }
-  };
+  // const handelOnChange = event => {
+  //   const { name, value } = event.target;
+  //   if (name === 'name') {
+  //     setName(value);
+  //   } else if (name === 'number') {
+  //     setNumber(value);
+  //   }
+  // };
 
-  const handelOnSubmit = event => {
-    event.preventDefault();
-    const newContact = {
-      name: name.trim(),
-      number: number.trim(),
-      id: nanoid(),
-    };
-    if (!name.trim()) {
-      return;
-    }
+  // const handelOnSubmit = event => {
+  //   event.preventDefault();
+  //   const newContact = {
+  //     name: name.trim(),
+  //     number: number.trim(),
+  //     id: nanoid(),
+  //   };
+  //   if (!name.trim()) {
+  //     return;
+  //   }
 
-    handleAddContact(newContact);
-    setName('');
-    setNumber('');
-  };
-  const handleAddContact = newContact => {
-    const isDublicate = contacts.find(
-      contact => contact.name === newContact.name
-    );
+  //   handleAddContact(newContact);
+  //   setName('');
+  //   setNumber('');
+  // };
+  // const handleAddContact = newContact => {
+  //   const isDublicate = contacts.find(
+  //     contact => contact.name === newContact.name
+  //   );
 
-    if (isDublicate) {
-      alert(`${newContact.name} is already in contacts.`);
-    } else {
-      dispatch(addContact(newContact));
-    }
-  };
+  //   if (isDublicate) {
+  //     alert(`${newContact.name} is already in contacts.`);
+  //   } else {
+  //     dispatch(addContact(newContact));
+  //   }
+  // };
   return (
-    <StyledForm onSubmit={handelOnSubmit}>
+    <StyledForm
+    // onSubmit={handelOnSubmit}
+    >
       <label>
         Name:
         <StyledInput
-          onChange={handelOnChange}
+          // onChange={handelOnChange}
           type="text"
           placeholder="Enter the name "
           name="name"
-          value={name}
+          // value={name}
           required
         />
       </label>
       <label>
         Number:
         <StyledInput
-          onChange={handelOnChange}
+          // onChange={handelOnChange}
           placeholder="Enter the number"
-          value={number}
+          // value={number}
           type="tel"
           name="number"
           required
         />
       </label>
-      <StyledButton disabled={!name}>Add contact</StyledButton>
+      <StyledButton
+      // disabled={!name}
+      >
+        Add contact
+      </StyledButton>
     </StyledForm>
   );
 };
